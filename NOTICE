@@ -1,0 +1,21 @@
+sumu (素木)
+
+Acknowledgments
+
+sumu is original writing. No source text or code examples are copied from
+the projects below; its ideas were shaped by reading them:
+
+- ponytail by DietrichGebert (MIT, Copyright (c) 2026 DietrichGebert)
+  https://github.com/DietrichGebert/ponytail
+  The reuse ladder (need -> codebase -> stdlib/platform -> installed
+  dependency -> minimal code) follows its structure.
+- simplicity-first by Hamster Studio (MIT, Copyright (c) 2026 Hamster Studio)
+  https://github.com/gethamster/skills
+- code-simplification by Addy Osmani (MIT, Copyright (c) 2025 Addy Osmani)
+  https://github.com/addyosmani/agent-skills
+- code-simplifier by Anthropic (repository licensed Apache-2.0)
+  https://github.com/anthropics/claude-plugins-official
+- deslop by heyimcarlos
+  https://github.com/heyimcarlos/agent-skills
+
+These projects do not endorse sumu.

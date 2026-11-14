@@ -1,0 +1,117 @@
+{
+  "skill_name": "sumu",
+  "trigger": {
+    "positive": [
+      "Use sumu to implement this export feature",
+      "This code is way too convoluted, rewrite it simpler without changing behavior",
+      "Don't over-engineer it, just add sorting by name to the list",
+      "What in this commit can we delete?",
+      "Is this module over-engineered?",
+      "Review this diff for over-engineering",
+      "Keep it simple, yagni"
+    ],
+    "negative": [
+      { "prompt": "Translate this paragraph into Japanese", "note": "translation" },
+      { "prompt": "Make this blog post sound more human", "note": "prose editing" },
+      { "prompt": "Check this login endpoint for security holes", "note": "security review, not complexity review" },
+      { "prompt": "Long day today", "note": "chat" }
+    ]
+  },
+  "evals": [
+    {
+      "id": "reuse-normalize",
+      "mode": "implement",
+      "files": "fixtures/reuse-normalize",
+      "prompt": "Add name handling to new_report so its results match old_report.",
+      "expectations": [
+        "Reuses names.normalize_name; does not write a .lower() version, copy the function or add a dependency",
+        "\" Straße \" and \"strasse\" land under the same name in both reports",
+        "Reuses the existing tests and adds only the coverage the new report is missing"
+      ]
+    },
+    {
+      "id": "sort-command",
+      "mode": "implement",
+      "files": "fixtures/sort-command",
+      "prompt": "Add a command that sorts by name. No other sort orders are needed.",
+      "expectations": [
+        "Implements the sort command and follows the case-insensitive rule stated at the top of the file",
+        "Introduces no strategy, registry or sort configuration",
+        "Does not refuse the requested sort in the name of YAGNI",
+        "Keeps the input and output of the existing commands"
+      ]
+    },
+    {
+      "id": "review-transaction",
+      "mode": "review",
+      "files": "fixtures/review-transaction",
+      "prompt": "Check orders.py for anything that can be simplified.",
+      "expectations": [
+        "Modifies no files",
+        "Does not suggest deleting with_transaction for having one caller: it owns commit, rollback and release",
+        "With no valid findings, says so directly and states what was checked",
+        "Does not claim the whole project is correct or ready to ship"
+      ]
+    },
+    {
+      "id": "tidy-save",
+      "mode": "implement",
+      "files": "fixtures/tidy-save",
+      "prompt": "Tidy up save in store.py so it reads better. Behavior must not change.",
+      "expectations": [
+        "May switch to early returns and improve local names",
+        "Deletes comments that restate the code and keeps the 'write a temp file, then replace' comment",
+        "Keeps the atomic replace, both error return values and the order they are checked in",
+        "Does not split out pass-through helpers just to remove nesting, and touches no other file"
+      ]
+    },
+    {
+      "id": "cache-complete",
+      "mode": "implement",
+      "files": "fixtures/cache-spec",
+      "prompt": "Implement the in-memory cache described in SPEC.md.",
+      "expectations": [
+        "Implements and verifies all three: expiry, a size limit with LRU eviction, and invalidation",
+        "Reading an expired entry never returns the old value",
+        "Does not hand back a plain dict or an lru_cache without expiry, and does not ask the user to argue for the full version",
+        "Adds no distribution, persistence or plugin interface, and no new dependency"
+      ]
+    },
+    {
+      "id": "transfer-boundaries",
+      "mode": "implement",
+      "files": "fixtures/transfer",
+      "prompt": "Simplify transfer in bank.py without changing behavior. All callers are logged in and the parameters are type-annotated.",
+      "expectations": [
+        "Keeps the runtime amount check and the account permission check; being logged in and type hints replace neither",
+        "Keeps the transaction and lets exceptions propagate instead of turning them into success or None",
+        "May remove the duplicate amount check inside the transaction, explaining that the earlier check already covers it",
+        "test_bank.py passes without modification"
+      ]
+    },
+    {
+      "id": "audit-dynamic",
+      "mode": "review",
+      "files": "fixtures/audit-dynamic",
+      "prompt": "Review this repo for anything that can be simplified.",
+      "expectations": [
+        "Modifies no files",
+        "Reports that ExportService only passes calls through and the caller can call run directly",
+        "Does not report export_legacy_xml as dead code: config.json reaches it through getattr",
+        "export_json can only be enabled dynamically through config: lists it as open or as needing a decision, with no definite delete instruction",
+        "Findings are numbered and the report ends with a not-covered line"
+      ]
+    },
+    {
+      "id": "followup-scope",
+      "mode": "implement",
+      "files": "fixtures/audit-dynamic",
+      "prompt": "(Following the audit-dynamic report) Fix item 1.",
+      "expectations": [
+        "Changes only what item 1 of the report names and leaves the other items alone",
+        "Does not ask the user to confirm again",
+        "Reports the change and how it was verified"
+      ]
+    }
+  ]
+}

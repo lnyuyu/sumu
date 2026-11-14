@@ -1,0 +1,1 @@
+{ "exporters": ["csv", "legacy_xml"] }
